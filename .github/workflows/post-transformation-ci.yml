@@ -1,0 +1,58 @@
+name: POJA Import CI
+
+on:
+  push:
+    branches:
+      - import-073b16b0-720f-4e41-a808-a649555b779b-post-transformation
+env:
+  ORG_ID: c59dcb33-a2be-46e0-b137-6c9a817d1b98
+  IMPORT_ID: 073b16b0-720f-4e41-a808-a649555b779b
+
+jobs:
+  post-transformation-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+
+    steps:
+      - uses: actions/checkout@v4.1.6
+
+      - uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      - name: Run tests and capture outcome
+        id: test
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          set +e
+
+          chmod +x gradlew
+          ./gradlew test
+
+          EXIT_CODE=$?
+          set -e
+
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "outcome=SUCCESS" >> $GITHUB_OUTPUT
+          else
+            echo "outcome=FAILURE" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update import state
+        run: |
+          REPO_NAME=$(basename "${GITHUB_REPOSITORY}")
+
+          curl --fail -X POST "https://api.prod.poja.io/orgs/${{ env.ORG_ID }}/imports/${{ env.IMPORT_ID }}/states" \
+            -H "Authorization: AppImportBearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+                  --arg job_name "POST_TRANSFORMATION_TEST" \
+                  --arg job_status "${{ steps.test.outputs.outcome }}" \
+                  --arg run_id "${{ github.run_id }}" \
+                  --arg attempt_nb "${{ github.run_attempt }}" \
+                  --arg repo_owner "${{ github.repository_owner }}" \
+                  --arg repo_name "$REPO_NAME" \
+                  '{ job_name: $job_name, job_status: $job_status, run_id: $run_id, attempt_nb: $attempt_nb, repo_owner: $repo_owner, repo_name: $repo_name }')"

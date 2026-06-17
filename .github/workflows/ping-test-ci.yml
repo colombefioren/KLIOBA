@@ -1,0 +1,83 @@
+name: POJA Ping Test
+
+on:
+  push:
+    branches:
+      - import-d3bf356e-a4f9-45ac-b60f-6b20cbc414c2-ping-test
+
+env:
+  ORG_ID: c59dcb33-a2be-46e0-b137-6c9a817d1b98
+  IMPORT_ID: d3bf356e-a4f9-45ac-b60f-6b20cbc414c2
+
+jobs:
+  ping-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_AUTHORIZATION_GRANT_TYPE: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_AUTHORIZATION_GRANT_TYPE }}
+      VOLA_API_KEY: ${{ secrets.TEST_VOLA_API_KEY }}
+      SPRING_SESSION_STORETYPE: ${{ secrets.TEST_SPRING_SESSION_STORETYPE }}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_PROVIDER: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_PROVIDER }}
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_USERNAMEATTRIBUTE: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_USERNAMEATTRIBUTE }}
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: ${{ secrets.TEST_LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB }}
+      SPRING_FLYWAY_OUTOFORDER: ${{ secrets.TEST_SPRING_FLYWAY_OUTOFORDER }}
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_ISSUERURI: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_ISSUERURI }}
+      SPRING_SESSION_JDBC_INITIALIZE_SCHEMA: ${{ secrets.TEST_SPRING_SESSION_JDBC_INITIALIZE_SCHEMA }}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_CLIENTID: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_CLIENTID }}
+      VOLA_API_URL: ${{ secrets.TEST_VOLA_API_URL }}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_CLIENT_SECRET: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_CLIENT_SECRET }}
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_JWK_SET_URI: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_JWK_SET_URI }}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_REDIRECT_URI: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_REDIRECT_URI }}
+      SPRING_DATASOURCE_PASSWORD: ${{ secrets.TEST_SPRING_DATASOURCE_PASSWORD }}
+      SPRING_DATASOURCE_URL: ${{ secrets.TEST_SPRING_DATASOURCE_URL }}
+      TSINJO_LOGOUT_URL: ${{ secrets.TEST_TSINJO_LOGOUT_URL }}
+      SPRING_DATASOURCE_USERNAME: ${{ secrets.TEST_SPRING_DATASOURCE_USERNAME }}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_CLIENT_ID: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_CLIENT_ID }}
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_TOKEN_URI: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_TOKEN_URI }}
+      CASDOOR_LOGOUT_URL: ${{ secrets.TEST_CASDOOR_LOGOUT_URL }}
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_AUTHORIZATION_URI: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_CASDOOR_AUTHORIZATION_URI }}
+      LOGGING_LEVEL_ROOT: ${{ secrets.TEST_LOGGING_LEVEL_ROOT }}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_SCOPE: ${{ secrets.TEST_SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_SCOPE }}
+
+    steps:
+      - uses: actions/checkout@v4.1.6
+
+      - uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      - name: Run ping test
+        id: test
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          set +e
+
+          chmod +x gradlew
+          ./gradlew test --tests PingIT
+
+          EXIT_CODE=$?
+          set -e
+
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "outcome=SUCCESS" >> $GITHUB_OUTPUT
+          else
+            echo "outcome=FAILURE" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update import state
+        run: |
+          REPO_NAME=$(basename "${GITHUB_REPOSITORY}")
+
+          curl --fail -X POST "https://api.poja.io/orgs/${{ env.ORG_ID }}/imports/${{ env.IMPORT_ID }}/states" \
+            -H "Authorization: AppImportBearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+                  --arg job_name "POST_TRANSFORMATION_PING_TEST" \
+                  --arg job_status "${{ steps.test.outputs.outcome }}" \
+                  --arg run_id "${{ github.run_id }}" \
+                  --arg attempt_nb "${{ github.run_attempt }}" \
+                  --arg repo_owner "${{ github.repository_owner }}" \
+                  --arg repo_name "$REPO_NAME" \
+                  '{ job_name: $job_name, job_status: $job_status, run_id: $run_id, attempt_nb: $attempt_nb, repo_owner: $repo_owner, repo_name: $repo_name }')"

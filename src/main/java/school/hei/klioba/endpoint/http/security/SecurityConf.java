@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,7 +40,11 @@ public class SecurityConf {
     http.csrf(Customizer.withDefaults())
         .authorizeHttpRequests(
             authorization ->
-                authorization.requestMatchers("/").permitAll().anyRequest().authenticated())
+                authorization
+                    .requestMatchers(HttpMethod.GET, "/ping")
+                    .permitAll()
+                    .requestMatchers("**")
+                    .authenticated())
         .addFilterBefore(statePaddingFixFilter, BasicAuthenticationFilter.class)
         .oauth2Login(
             oauth2 ->

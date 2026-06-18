@@ -7,10 +7,10 @@ import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import school.hei.klioba.model.psp.PspType;
 
-class DonationTest {
+class MembershipFeeTest {
 
   @Test
-  void donation_creation_succeeds() {
+  void membershipFee_creation_succeeds() {
     var payment =
         new Payment(
             "p1",
@@ -23,17 +23,18 @@ class DonationTest {
     var user = new User("u1", "John", "Doe", "john@example.com");
     var creationInstant = Instant.now();
 
-    var donation = new MembershipFee("d1", payment, user, null, creationInstant);
+    var club = new Club("c1", "Club 1");
+    var membershipFee = new MembershipFee("d1", payment, user, club, creationInstant);
 
-    assertNotNull(donation);
-    assertEquals("d1", donation.getId());
-    assertEquals(payment, donation.getPayment());
-    assertEquals(user, donation.getUser());
-    assertEquals(creationInstant, donation.getCreationInstant());
+    assertNotNull(membershipFee);
+    assertEquals("d1", membershipFee.getId());
+    assertEquals(payment, membershipFee.getPayment());
+    assertEquals(user, membershipFee.getUser());
+    assertEquals(creationInstant, membershipFee.getCreationInstant());
   }
 
   @Test
-  void donation_toString_works() {
+  void membershipFee_toString_works() {
     // Arrange
     var payment =
         new Payment(
@@ -45,8 +46,9 @@ class DonationTest {
             Instant.parse("2025-08-11T13:51:26.165532Z"),
             Instant.parse("2025-08-11T13:51:36.165532Z"));
     var user = new User("u1", "John", "Doe", "john@example.com");
-    var donation = new MembershipFee("d1", payment, user, null, Instant.now());
+    var club = new Club("c1", "Club 1");
+    var membershipFee = new MembershipFee("d1", payment, user, club, Instant.now());
 
-    assertNotNull(donation.toString());
+    assertNotNull(membershipFee.toString());
   }
 }

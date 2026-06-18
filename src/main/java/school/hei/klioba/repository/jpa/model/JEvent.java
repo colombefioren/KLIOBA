@@ -20,8 +20,8 @@ import lombok.Setter;
 public class JEvent {
   @Id private String id;
 
-  @ManyToOne
-  @JoinColumn(name = "club_id")
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "club_id", nullable = false)
   private JClub club;
 
   @ManyToOne

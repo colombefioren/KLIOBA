@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import school.hei.klioba.endpoint.http.model.MembershipFeeCreationForm;
+import school.hei.klioba.model.Club;
 import school.hei.klioba.model.MembershipFee;
 import school.hei.klioba.model.Payment;
 import school.hei.klioba.model.PaymentStatus;
@@ -42,6 +43,7 @@ public class MembershipFormServiceTest {
   void getPrefilledDonationForm_hasPreviousEvent_returnsPrefilledForm() {
     String email = "user@example.com";
 
+    Club club = new Club("c1", "Club 1");
     User user = new User("1", "Tiavina", "Andriamamivony", email);
     Payment payment =
         new Payment(
@@ -52,7 +54,7 @@ public class MembershipFormServiceTest {
             PaymentStatus.CONFIRMED,
             Instant.now(),
             Instant.parse("2025-08-11T13:51:36.165532Z"));
-    MembershipFee donation = new MembershipFee("d1", payment, user, null, Instant.now());
+    MembershipFee donation = new MembershipFee("d1", payment, user, club, Instant.now());
 
     when(eventService.findAllWithPaymentResolution()).thenReturn(List.of(donation));
 
@@ -67,6 +69,7 @@ public class MembershipFormServiceTest {
   void getPrefilledDonationForm_multipleEvents_returnsLatestForUser() {
     String email = "user@example.com";
 
+    Club club = new Club("c1", "Club 1");
     User user1 = new User("1", "Alice", "Smith", email);
     Payment payment1 =
         new Payment(
@@ -78,7 +81,7 @@ public class MembershipFormServiceTest {
             Instant.now().minusSeconds(3600),
             Instant.parse("2025-08-11T13:51:36.165532Z"));
     MembershipFee donation1 =
-        new MembershipFee("d1", payment1, user1, null, Instant.now().minusSeconds(3600));
+        new MembershipFee("d1", payment1, user1, club, Instant.now().minusSeconds(3600));
 
     User user2 = new User("2", "Tiavina", "Andriamamivony", email);
     Payment payment2 =
@@ -90,7 +93,7 @@ public class MembershipFormServiceTest {
             PaymentStatus.CONFIRMED,
             Instant.now(),
             Instant.parse("2025-08-11T13:51:36.165532Z"));
-    MembershipFee donation2 = new MembershipFee("d2", payment2, user2, null, Instant.now());
+    MembershipFee donation2 = new MembershipFee("d2", payment2, user2, club, Instant.now());
 
     when(eventService.findAllWithPaymentResolution()).thenReturn(List.of(donation1, donation2));
 

@@ -6,6 +6,7 @@ import static school.hei.klioba.model.psp.PspType.ORANGE_MONEY;
 
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
+import school.hei.klioba.model.Club;
 import school.hei.klioba.model.MembershipFee;
 import school.hei.klioba.model.Payment;
 import school.hei.klioba.model.User;
@@ -27,10 +28,11 @@ class ThEventAdditionalTest {
 
     var user = new User("userId", "Lou", "Andria", "lou@hei.school");
 
+    var club = new Club("c1", "Club 1");
     var thEvent =
         new ThEvent(
             new MembershipFee(
-                "eventId", payment, user, null, Instant.parse("2025-08-11T13:51:16.165532Z")));
+                "eventId", payment, user, club, Instant.parse("2025-08-11T13:51:16.165532Z")));
 
     assertEquals(
         "2025-08-11 16:51:16. Par Lou Andria<lou@hei.school>. Statut: inconnu, récupéré le"
@@ -53,10 +55,11 @@ class ThEventAdditionalTest {
 
     var user = new User("userId", "Lou", "Andria", "lou@hei.school");
 
+    var club = new Club("c1", "Club 1");
     var thEvent =
         new ThEvent(
             new Withdrawal(
-                "eventId", payment, user, null, Instant.parse("2025-08-11T13:51:16.165532Z"), ""));
+                "eventId", payment, user, club, Instant.parse("2025-08-11T13:51:16.165532Z"), ""));
 
     assertEquals("yellow", thEvent.color());
   }
@@ -75,10 +78,11 @@ class ThEventAdditionalTest {
 
     var user = new User("userId", "Lou", "Andria", "lou@hei.school");
 
+    var club = new Club("c1", "Club 1");
     var thEvent =
         new ThEvent(
             new MembershipFee(
-                "eventId", payment, user, null, Instant.parse("2025-08-11T13:51:16.165532Z")));
+                "eventId", payment, user, club, Instant.parse("2025-08-11T13:51:16.165532Z")));
 
     assertEquals("black", thEvent.color());
   }
@@ -97,13 +101,14 @@ class ThEventAdditionalTest {
 
     var user = new User("userId", "Alice", "Smith", "alice@example.com");
 
+    var club = new Club("c1", "Club 1");
     var thEvent =
         new ThEvent(
             new Withdrawal(
                 "eventId",
                 payment,
                 user,
-                null,
+                club,
                 Instant.parse("2025-08-11T13:51:16.165532Z"),
                 "OUT"));
 

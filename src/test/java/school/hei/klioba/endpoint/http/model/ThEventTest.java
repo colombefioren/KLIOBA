@@ -8,6 +8,7 @@ import static school.hei.klioba.model.psp.PspType.ORANGE_MONEY;
 
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
+import school.hei.klioba.model.Club;
 import school.hei.klioba.model.MembershipFee;
 import school.hei.klioba.model.Payment;
 import school.hei.klioba.model.User;
@@ -28,10 +29,11 @@ class ThEventTest {
             Instant.parse("2025-08-11T13:51:36.165532Z"));
     var user = new User("userId", "Lou", "Andria", "lou@hei.school");
 
+    var club = new Club("c1", "Club 1");
     var thEvent =
         new ThEvent(
             new MembershipFee(
-                "eventId", payment, user, null, Instant.parse("2025-08-11T13:51:16.165532Z")));
+                "eventId", payment, user, club, Instant.parse("2025-08-11T13:51:16.165532Z")));
 
     assertEquals(
         "2025-08-11 16:51:16, 17 Ar. Par Lou Andria<lou@hei.school>. Statut: en succès, récupéré le"
@@ -54,10 +56,11 @@ class ThEventTest {
 
     var user = new User("userId", "Lou", "Andria", "lou@hei.school");
 
+    var club = new Club("c1", "Club 1");
     var thEvent =
         new ThEvent(
             new Withdrawal(
-                "eventId", payment, user, null, Instant.parse("2025-08-11T13:51:16.165532Z"), ""));
+                "eventId", payment, user, club, Instant.parse("2025-08-11T13:51:16.165532Z"), ""));
 
     assertEquals(
         "2025-08-11 16:51:16, -17 Ar. Pour Lou Andria<lou@hei.school>. ", thEvent.toString());
@@ -77,10 +80,11 @@ class ThEventTest {
             Instant.parse("2025-08-11T13:51:36.165532Z"));
     var user = new User("userId", "Lou", "Andria", "lou@hei.school");
 
+    var club = new Club("c1", "Club 1");
     var thEvent =
         new ThEvent(
             new MembershipFee(
-                "eventId", payment, user, null, Instant.parse("2025-08-11T13:51:16.165532Z")));
+                "eventId", payment, user, club, Instant.parse("2025-08-11T13:51:16.165532Z")));
 
     assertEquals(
         "2025-08-11 16:51:16. Par Lou Andria<lou@hei.school>. Statut: en vérification, récupéré le"
@@ -103,10 +107,11 @@ class ThEventTest {
 
     var user = new User("userId", "Lou", "Andria", "lou@hei.school");
 
+    var club = new Club("c1", "Club 1");
     var thEvent =
         new ThEvent(
             new MembershipFee(
-                "eventId", payment, user, null, Instant.parse("2025-08-11T13:51:16.165532Z")));
+                "eventId", payment, user, club, Instant.parse("2025-08-11T13:51:16.165532Z")));
 
     assertEquals(
         "2025-08-11 16:51:16. Par Lou Andria<lou@hei.school>. Statut: en échec, récupéré le"

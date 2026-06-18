@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import school.hei.klioba.model.psp.PspType;
 
 class EventTest {
+  private static final Club CLUB = new Club("c1", "Club 1");
 
   @Test
   void from_withPositiveAmount_createsDonation() {
@@ -22,7 +23,7 @@ class EventTest {
     var user = new User("u1", "John", "Doe", "john@example.com");
     Instant creationInstant = Instant.now();
 
-    var event = Event.from("e1", payment, user, null, creationInstant, "");
+    var event = Event.from("e1", payment, user, CLUB, creationInstant, "");
 
     assertInstanceOf(MembershipFee.class, event);
     assertEquals("e1", event.getId());
@@ -45,7 +46,7 @@ class EventTest {
     var user = new User("u1", "Jane", "Doe", "jane@example.com");
     var creationInstant = Instant.now();
 
-    var event = Event.from("e1", payment, user, null, creationInstant, "");
+    var event = Event.from("e1", payment, user, CLUB, creationInstant, "");
 
     assertInstanceOf(Withdrawal.class, event);
     assertEquals("e1", event.getId());
@@ -68,7 +69,7 @@ class EventTest {
     var user = new User("u1", "John", "Doe", "john@example.com");
     var creationInstant = Instant.now();
 
-    var event = Event.from("e1", payment, user, null, creationInstant, "");
+    var event = Event.from("e1", payment, user, CLUB, creationInstant, "");
 
     assertInstanceOf(MembershipFee.class, event);
   }
@@ -87,13 +88,13 @@ class EventTest {
     var user = new User("u1", "John", "Doe", "john@example.com");
     var creationInstant = Instant.now();
 
-    var event = Event.from("e1", payment, user, null, creationInstant, "");
+    var event = Event.from("e1", payment, user, CLUB, creationInstant, "");
 
     assertInstanceOf(MembershipFee.class, event);
   }
 
   @Test
-  void donation_withPayment_createsNewDonation() {
+  void membershipFee_withPayment_createsNewMembershipFee() {
     var oldPayment =
         new Payment(
             "p1",
@@ -105,7 +106,7 @@ class EventTest {
             Instant.now());
     var user = new User("u1", "John", "Doe", "john@example.com");
     var creationInstant = Instant.now();
-    var donation = new MembershipFee("d1", oldPayment, user, null, creationInstant);
+    var membershipFee = new MembershipFee("d1", oldPayment, user, CLUB, creationInstant);
 
     var newPayment =
         new Payment(
@@ -117,7 +118,7 @@ class EventTest {
             Instant.now(),
             Instant.now());
 
-    var updatedEvent = donation.withPayment(newPayment);
+    var updatedEvent = membershipFee.withPayment(newPayment);
 
     assertInstanceOf(MembershipFee.class, updatedEvent);
     assertEquals("d1", updatedEvent.getId());
@@ -127,7 +128,7 @@ class EventTest {
   }
 
   @Test
-  void help_withPayment_createsNewHelp() {
+  void withdrawal_withPayment_createsNewWithdrawal() {
     var oldPayment =
         new Payment(
             "p1",
@@ -139,7 +140,7 @@ class EventTest {
             Instant.now());
     var user = new User("u1", "Jane", "Doe", "jane@example.com");
     var creationInstant = Instant.now();
-    var help = new Withdrawal("h1", oldPayment, user, null, creationInstant, "");
+    var withdrawal = new Withdrawal("h1", oldPayment, user, CLUB, creationInstant, "");
 
     var newPayment =
         new Payment(
@@ -151,7 +152,7 @@ class EventTest {
             Instant.now(),
             Instant.now());
 
-    var updatedEvent = help.withPayment(newPayment);
+    var updatedEvent = withdrawal.withPayment(newPayment);
 
     assertInstanceOf(Withdrawal.class, updatedEvent);
     assertEquals("h1", updatedEvent.getId());

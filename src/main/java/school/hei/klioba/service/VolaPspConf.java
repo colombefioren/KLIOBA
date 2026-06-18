@@ -13,7 +13,7 @@ public class VolaPspConf {
   private final String apiKey;
 
   public VolaPspConf(
-      @Value("${vola.api.url}") String apiUrl, @Value("${vola.api.key}") String apiKey) {
+      @Value("${vola.api.url:}") String apiUrl, @Value("${vola.api.key:}") String apiKey) {
     this.apiUrl = apiUrl;
     this.apiKey = apiKey;
   }

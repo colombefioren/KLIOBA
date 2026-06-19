@@ -20,18 +20,18 @@ public class SecurityConf {
 
   private final String casdoorClientId;
   private final String casdoorLogoutUrl;
-  private final String tsinjoLogoutUrl;
+  private final String kliobaLogoutUrl;
   private final Oauth2StatePaddingFixFilter statePaddingFixFilter;
 
   public SecurityConf(
       @Value("${spring.security.oauth2.client.registration.casdoor.clientid}")
           String casdoorClientId,
       @Value("${casdoor.logout.url}") String casdoorLogoutUrl,
-      @Value("${tsinjo.logout.url}") String tsinjoLogoutUrl,
+      @Value("${klioba.logout.url}") String kliobaLogoutUrl,
       Oauth2StatePaddingFixFilter statePaddingFixFilter) {
     this.casdoorClientId = casdoorClientId;
     this.casdoorLogoutUrl = casdoorLogoutUrl;
-    this.tsinjoLogoutUrl = tsinjoLogoutUrl;
+    this.kliobaLogoutUrl = kliobaLogoutUrl;
     this.statePaddingFixFilter = statePaddingFixFilter;
   }
 
@@ -83,9 +83,9 @@ public class SecurityConf {
                                     + "?id_token_hint="
                                     + accessToken
                                     + "&post_logout_redirect_uri="
-                                    + tsinjoLogoutUrl);
+                                    + kliobaLogoutUrl);
                           } else {
-                            response.sendRedirect(tsinjoLogoutUrl);
+                            response.sendRedirect(kliobaLogoutUrl);
                           }
                         }));
     return http.build();

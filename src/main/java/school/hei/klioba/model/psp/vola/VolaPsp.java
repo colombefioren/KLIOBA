@@ -18,24 +18,24 @@ public class VolaPsp implements Psp {
   private final VolaClient volaClient;
 
   @Override
-  public Payment create(String tsinjoId, PspType pspType, String pspId, String email) {
+  public Payment create(String kliobaId, PspType pspType, String pspId, String email) {
     var volaPayment = volaClient.create(pspType, pspId, email);
-    return toPayment(tsinjoId, volaPayment);
+    return toPayment(kliobaId, volaPayment);
   }
 
   @Override
-  public Payment get(String tsinjoId, PspType pspType, String pspId, String email) {
+  public Payment get(String kliobaId, PspType pspType, String pspId, String email) {
     var volaPayment = volaClient.get(pspType, pspId, email);
-    return toPayment(tsinjoId, volaPayment);
+    return toPayment(kliobaId, volaPayment);
   }
 
   private Payment toPayment(
-      String tsinjoId, school.hei.klioba.model.psp.vola.api.gen.client.model.Payment volaPayment) {
-    if (tsinjoId == null) {
-      throw new IllegalArgumentException("tsinjoId cannot be null");
+      String kliobaId, school.hei.klioba.model.psp.vola.api.gen.client.model.Payment volaPayment) {
+    if (kliobaId == null) {
+      throw new IllegalArgumentException("kliobaId cannot be null");
     }
     if (volaPayment == null) {
-      throw new IllegalArgumentException("Vola payment is null for tsinjoId: " + tsinjoId);
+      throw new IllegalArgumentException("Vola payment is null for kliobaId: " + kliobaId);
     }
 
     var volaPspPayment = volaPayment.getPspPayment();
@@ -54,13 +54,13 @@ public class VolaPsp implements Psp {
 
     return volaPspPayment == null
         ? Payment.builder()
-            .id(tsinjoId)
+            .id(kliobaId)
             .status(status)
             .pspLastVerificationInstant(lastVerificationInstant)
             .creationInstant(null)
             .build()
         : Payment.builder()
-            .id(tsinjoId)
+            .id(kliobaId)
             .amount(volaPspPayment.getAmount())
             .pspType(toPspType(volaPspPayment.getPspType()))
             .pspId(volaPspPayment.getId())

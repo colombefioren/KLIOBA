@@ -22,7 +22,7 @@ public class EnvConf {
         "spring.security.oauth2.client.registration.casdoor.authorization-grant-type",
         () -> "authorization_code");
     registry.add("casdoor.logout.url", () -> "dummy");
-    registry.add("tsinjo.logout.url", () -> "dummy");
+    registry.add("klioba.logout.url", () -> "dummy");
     registry.add("vola.api.url", () -> "http://dummy.vola.api");
     registry.add("vola.api.key", () -> "dummy-key");
   }

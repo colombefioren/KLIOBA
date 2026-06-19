@@ -28,11 +28,11 @@ public class MembershipFormServiceTest {
   }
 
   @Test
-  void getPrefilledDonationForm_noPreviousEvent_returnsEmptyForm() {
+  void getPrefilledMembershipForm_noPreviousEvent_returnsEmptyForm() {
     String email = "user@example.com";
     when(eventService.findAllWithPaymentResolution()).thenReturn(List.of());
 
-    MembershipFeeCreationForm form = membershipFormService.getPrefilledDonationForm(email);
+    MembershipFeeCreationForm form = membershipFormService.getPrefilledMembershipForm(email);
 
     assertEquals("", form.firstName());
     assertEquals("", form.lastName());
@@ -40,7 +40,7 @@ public class MembershipFormServiceTest {
   }
 
   @Test
-  void getPrefilledDonationForm_hasPreviousEvent_returnsPrefilledForm() {
+  void getPrefilledMembershipForm_hasPreviousEvent_returnsPrefilledForm() {
     String email = "user@example.com";
 
     Club club = new Club("c1", "Club 1");
@@ -54,11 +54,11 @@ public class MembershipFormServiceTest {
             PaymentStatus.CONFIRMED,
             Instant.now(),
             Instant.parse("2025-08-11T13:51:36.165532Z"));
-    MembershipFee donation = new MembershipFee("d1", payment, user, club, Instant.now());
+    MembershipFee fee = new MembershipFee("d1", payment, user, club, Instant.now());
 
-    when(eventService.findAllWithPaymentResolution()).thenReturn(List.of(donation));
+    when(eventService.findAllWithPaymentResolution()).thenReturn(List.of(fee));
 
-    MembershipFeeCreationForm form = membershipFormService.getPrefilledDonationForm(email);
+    MembershipFeeCreationForm form = membershipFormService.getPrefilledMembershipForm(email);
 
     assertEquals("Tiavina", form.firstName());
     assertEquals("Andriamamivony", form.lastName());
@@ -66,7 +66,7 @@ public class MembershipFormServiceTest {
   }
 
   @Test
-  void getPrefilledDonationForm_multipleEvents_returnsLatestForUser() {
+  void getPrefilledMembershipForm_multipleEvents_returnsLatestForUser() {
     String email = "user@example.com";
 
     Club club = new Club("c1", "Club 1");
@@ -80,7 +80,7 @@ public class MembershipFormServiceTest {
             PaymentStatus.CONFIRMED,
             Instant.now().minusSeconds(3600),
             Instant.parse("2025-08-11T13:51:36.165532Z"));
-    MembershipFee donation1 =
+    MembershipFee fee1 =
         new MembershipFee("d1", payment1, user1, club, Instant.now().minusSeconds(3600));
 
     User user2 = new User("2", "Tiavina", "Andriamamivony", email);
@@ -93,11 +93,11 @@ public class MembershipFormServiceTest {
             PaymentStatus.CONFIRMED,
             Instant.now(),
             Instant.parse("2025-08-11T13:51:36.165532Z"));
-    MembershipFee donation2 = new MembershipFee("d2", payment2, user2, club, Instant.now());
+    MembershipFee fee2 = new MembershipFee("d2", payment2, user2, club, Instant.now());
 
-    when(eventService.findAllWithPaymentResolution()).thenReturn(List.of(donation1, donation2));
+    when(eventService.findAllWithPaymentResolution()).thenReturn(List.of(fee1, fee2));
 
-    MembershipFeeCreationForm form = membershipFormService.getPrefilledDonationForm(email);
+    MembershipFeeCreationForm form = membershipFormService.getPrefilledMembershipForm(email);
 
     assertEquals("Tiavina", form.firstName());
     assertEquals("Andriamamivony", form.lastName());

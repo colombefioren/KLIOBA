@@ -17,7 +17,7 @@ import school.hei.klioba.model.Withdrawal;
 class ThEventTest {
 
   @Test
-  void confirmed_donation_to_string() {
+  void confirmed_fee_to_string() {
     var payment =
         new Payment(
             "paymentId",
@@ -43,7 +43,7 @@ class ThEventTest {
   }
 
   @Test
-  void confirmed_help_to_string() {
+  void confirmed_withdrawal_to_string() {
     var payment =
         new Payment(
             "paymentId",

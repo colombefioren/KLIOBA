@@ -88,7 +88,7 @@ class ThEventAdditionalTest {
   }
 
   @Test
-  void help_without_statusDetails_hasNoPaymentInfo() {
+  void withdrawal_without_statusDetails_hasNoPaymentInfo() {
     var payment =
         new Payment(
             "paymentId",

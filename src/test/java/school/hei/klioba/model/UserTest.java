@@ -8,25 +8,25 @@ import org.junit.jupiter.api.Test;
 class UserTest {
 
   @Test
-  void donor_creation_succeeds() {
-    var donor = new Member("d1", "John", "Doe", "john@example.com");
+  void member_creation_succeeds() {
+    var member = new Member("d1", "John", "Doe", "john@example.com");
 
-    assertNotNull(donor);
-    assertEquals("d1", donor.getId());
-    assertEquals("John", donor.getFirstName());
-    assertEquals("Doe", donor.getLastName());
-    assertEquals("john@example.com", donor.getEmail());
+    assertNotNull(member);
+    assertEquals("d1", member.getId());
+    assertEquals("John", member.getFirstName());
+    assertEquals("Doe", member.getLastName());
+    assertEquals("john@example.com", member.getEmail());
   }
 
   @Test
-  void beneficiary_creation_succeeds() {
-    Withdrawer beneficiary = new Withdrawer("b1", "Jane", "Smith", "jane@example.com");
+  void withdrawer_creation_succeeds() {
+    Withdrawer withdrawer = new Withdrawer("b1", "Jane", "Smith", "jane@example.com");
 
-    assertNotNull(beneficiary);
-    assertEquals("b1", beneficiary.getId());
-    assertEquals("Jane", beneficiary.getFirstName());
-    assertEquals("Smith", beneficiary.getLastName());
-    assertEquals("jane@example.com", beneficiary.getEmail());
+    assertNotNull(withdrawer);
+    assertEquals("b1", withdrawer.getId());
+    assertEquals("Jane", withdrawer.getFirstName());
+    assertEquals("Smith", withdrawer.getLastName());
+    assertEquals("jane@example.com", withdrawer.getEmail());
   }
 
   @Test
@@ -40,10 +40,10 @@ class UserTest {
   }
 
   @Test
-  void donor_toString_works() {
-    var donor = new Member("d1", "Bob", "Builder", "bob@example.com");
+  void member_toString_works() {
+    var member = new Member("d1", "Bob", "Builder", "bob@example.com");
 
-    var result = donor.toString();
+    var result = member.toString();
 
     assertNotNull(result);
     assertEquals("User(id=d1, firstName=Bob, lastName=Builder, email=bob@example.com)", result);

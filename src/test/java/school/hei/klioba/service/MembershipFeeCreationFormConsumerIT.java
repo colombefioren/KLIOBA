@@ -42,7 +42,7 @@ class MembershipFeeCreationFormConsumerIT extends FacadeIT {
   }
 
   @Test
-  void donate_then_read_donations() {
+  void payFee_then_read_fees() {
     var ref1 = generateValidPspId();
     var ref2 = generateValidPspId();
     var newEmail = randomUUID() + "@cute.dev";
@@ -81,7 +81,7 @@ class MembershipFeeCreationFormConsumerIT extends FacadeIT {
   }
 
   @Test
-  void donations_cannot_have_same_pspId() {
+  void fees_cannot_have_same_pspId() {
     String pspId = generateValidPspId();
 
     when(volaClientMock.create(any(), any(), any()))
@@ -98,7 +98,7 @@ class MembershipFeeCreationFormConsumerIT extends FacadeIT {
   }
 
   @Test
-  void donation_with_invalid_pspId_shouldFail() {
+  void fee_with_invalid_pspId_shouldFail() {
     String invalidPspId = randomUUID().toString();
 
     assertThrows(

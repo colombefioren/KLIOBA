@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Tsinjo - Historique</title>
+    <title>Klioba - Historique</title>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
@@ -20,12 +20,12 @@
         <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow transition flex flex-col justify-center items-center">
             <h3 class="text-[#16163f] font-semibold text-sm sm:text-base lg:text-lg text-center">Cotisations</h3>
             <p class="text-lg sm:text-xl font-extrabold text-[#9933cc] mt-1"
-               th:text="${fund.allConfirmedDonations != null ? #numbers.formatInteger(fund.allConfirmedDonations, 0, 'COMMA') + ' Ar' : '--'}">0 Ar</p>
+               th:text="${fund.allConfirmedFees != null ? #numbers.formatInteger(fund.allConfirmedFees, 0, 'COMMA') + ' Ar' : '--'}">0 Ar</p>
         </div>
         <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow transition flex flex-col justify-center items-center">
             <h3 class="text-[#16163f] font-semibold text-sm sm:text-base lg:text-lg text-center">Retraits</h3>
             <p class="text-lg sm:text-xl font-extrabold text-[#9933cc] mt-1"
-               th:text="${fund.allConfirmedHelps != null ? #numbers.formatInteger(fund.allConfirmedHelps, 0, 'COMMA') + ' Ar' : '--'}">0 Ar</p>
+               th:text="${fund.allConfirmedWithdrawals != null ? #numbers.formatInteger(fund.allConfirmedWithdrawals, 0, 'COMMA') + ' Ar' : '--'}">0 Ar</p>
         </div>
         <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow transition flex flex-col justify-center items-center">
             <h3 class="text-[#16163f] font-semibold text-sm sm:text-base lg:text-lg text-center">Fonds Restants</h3>
@@ -209,7 +209,7 @@
 
 </div>
 
-<script th:src="@{/script/donate.js}"></script>
+<script th:src="@{/script/membership.js}"></script>
 
 </body>
 </html>

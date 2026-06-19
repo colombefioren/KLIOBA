@@ -20,7 +20,7 @@ class ThFundTest {
   @Test
   void empty_thFunds_ok() {
     assertEquals(
-        "Donations confirmées: 0 Ar. Aides confirmées: 0 Ar. Fonds restants confirmés: 0 Ar.",
+        "Cotisations confirmées: 0 Ar. Retraits confirmés: 0 Ar. Fonds restants confirmés: 0 Ar.",
         new ThFund(List.of()).toString());
   }
 
@@ -29,7 +29,7 @@ class ThFundTest {
     var user = new User("userId", "Lou", "Andria", "lou@hei.school");
 
     assertEquals(
-        "Donations confirmées: 15 Ar. Aides confirmées: -11 Ar. Fonds restants confirmés: 4 Ar.",
+        "Cotisations confirmées: 15 Ar. Retraits confirmés: -11 Ar. Fonds restants confirmés: 4 Ar.",
         new ThFund(
                 List.of(
                     anEvent(user, null, VERIFYING),

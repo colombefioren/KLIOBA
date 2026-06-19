@@ -91,7 +91,7 @@ public class KliobaController {
     var defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
     var email = defaultOAuth2User.getAttributes().get("email").toString();
     MembershipFeeCreationForm membershipForm =
-        membershipFormService.getPrefilledDonationForm(email);
+        membershipFormService.getPrefilledMembershipForm(email);
     model.addAttribute("clubId", clubId);
     model.addAttribute("membershipForm", membershipForm);
     model.addAttribute(

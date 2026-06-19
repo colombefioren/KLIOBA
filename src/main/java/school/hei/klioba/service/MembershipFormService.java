@@ -13,7 +13,7 @@ public class MembershipFormService {
     this.eventService = eventService;
   }
 
-  public MembershipFeeCreationForm getPrefilledDonationForm(String email) {
+  public MembershipFeeCreationForm getPrefilledMembershipForm(String email) {
     var events = eventService.findAllWithPaymentResolution();
     var thEvents = events.stream().map(ThEvent::new).toList();
 

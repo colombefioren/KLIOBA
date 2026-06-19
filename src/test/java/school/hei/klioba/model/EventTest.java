@@ -10,7 +10,7 @@ class EventTest {
   private static final Club CLUB = new Club("c1", "Club 1");
 
   @Test
-  void from_withPositiveAmount_createsDonation() {
+  void from_withPositiveAmount_createsMembershipFee() {
     var payment =
         new Payment(
             "p1",
@@ -33,7 +33,7 @@ class EventTest {
   }
 
   @Test
-  void from_withNegativeAmount_createsHelp() {
+  void from_withNegativeAmount_createsWithdrawal() {
     var payment =
         new Payment(
             "p1",
@@ -56,7 +56,7 @@ class EventTest {
   }
 
   @Test
-  void from_withNullAmount_createsDonation() {
+  void from_withNullAmount_createsMembershipFee() {
     var payment =
         new Payment(
             "p1",
@@ -75,7 +75,7 @@ class EventTest {
   }
 
   @Test
-  void from_withZeroAmount_createsDonation() {
+  void from_withZeroAmount_createsMembershipFee() {
     var payment =
         new Payment(
             "p1",

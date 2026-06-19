@@ -11,17 +11,17 @@ import school.hei.klioba.model.Payment;
 @Getter
 public class ThFund {
   private final List<Event> events;
-  private final int allConfirmedDonations;
-  private final int allConfirmedHelps;
+  private final int allConfirmedFees;
+  private final int allConfirmedWithdrawals;
   private final int confirmedRemainingFund;
 
   public ThFund(List<Event> events) {
     this.events = events;
-    this.allConfirmedDonations = allConfirmedWithAmountPredicate(events, amount -> amount > 0);
-    this.allConfirmedHelps = allConfirmedWithAmountPredicate(events, amount -> amount < 0);
+    this.allConfirmedFees = allConfirmedWithAmountPredicate(events, amount -> amount > 0);
+    this.allConfirmedWithdrawals = allConfirmedWithAmountPredicate(events, amount -> amount < 0);
     this.confirmedRemainingFund =
-        // addition since helps are negative
-        allConfirmedDonations + allConfirmedHelps;
+        // addition since withdrawals are negative
+        allConfirmedFees + allConfirmedWithdrawals;
   }
 
   private int allConfirmedWithAmountPredicate(
@@ -38,9 +38,9 @@ public class ThFund {
   @Override
   public String toString() {
     return String.format(
-        "Donations confirmées: %d Ar. "
-            + "Aides confirmées: %d Ar. "
+        "Cotisations confirmées: %d Ar. "
+            + "Retraits confirmés: %d Ar. "
             + "Fonds restants confirmés: %d Ar.",
-        allConfirmedDonations, allConfirmedHelps, confirmedRemainingFund);
+        allConfirmedFees, allConfirmedWithdrawals, confirmedRemainingFund);
   }
 }

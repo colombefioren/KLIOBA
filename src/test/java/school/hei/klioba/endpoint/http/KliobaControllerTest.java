@@ -90,10 +90,10 @@ class KliobaControllerTest {
             PaymentStatus.CONFIRMED,
             Instant.now(),
             Instant.now());
-    MembershipFee donation = new MembershipFee("d1", payment, user, club, Instant.now());
+    MembershipFee fee = new MembershipFee("d1", payment, user, club, Instant.now());
 
     when(clubRepository.findById("c1")).thenReturn(java.util.Optional.of(club));
-    when(eventService.findAllByClubIdWithPaymentResolution("c1")).thenReturn(List.of(donation));
+    when(eventService.findAllByClubIdWithPaymentResolution("c1")).thenReturn(List.of(fee));
 
     String result = controller.historyByClub("c1", model, 0, 50);
 
@@ -151,12 +151,12 @@ class KliobaControllerTest {
     when(clubRepository.findById("cuisine")).thenReturn(java.util.Optional.of(club));
 
     var prefilledForm = new MembershipFeeCreationForm("John", "Doe", "");
-    when(membershipFormService.getPrefilledDonationForm(email)).thenReturn(prefilledForm);
+    when(membershipFormService.getPrefilledMembershipForm(email)).thenReturn(prefilledForm);
 
     var result = controller.membershipFee("cuisine", authentication, model);
 
     assertEquals("membership-fee", result);
-    verify(membershipFormService).getPrefilledDonationForm(email);
+    verify(membershipFormService).getPrefilledMembershipForm(email);
     verify(model).addAttribute("membershipForm", prefilledForm);
   }
 

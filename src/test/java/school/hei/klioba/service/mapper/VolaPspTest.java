@@ -18,7 +18,7 @@ public class VolaPspTest {
 
   @Test
   void creationInstant_should_be_mapped_from_pspPayment() {
-    String tsinjoId = "tsinjo-test";
+    String kliobaId = "klioba-test";
     String pspId = "MP250805.0922.B95953";
     String email = "ninah@mail.hei.school";
 
@@ -27,7 +27,7 @@ public class VolaPspTest {
     when(volaClient.get(ORANGE_MONEY, pspId, email)).thenReturn(rawPayment);
 
     VolaPsp volaPsp = new VolaPsp(volaClient);
-    Payment mapped = volaPsp.get(tsinjoId, ORANGE_MONEY, pspId, email);
+    Payment mapped = volaPsp.get(kliobaId, ORANGE_MONEY, pspId, email);
 
     assertPaymentMappedFromPspPayment(mapped, pspId);
   }

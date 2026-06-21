@@ -23,17 +23,17 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6 max-w-4xl mx-auto">
         <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow transition flex flex-col justify-center items-center">
-            <h3 class="text-[#16163f] font-semibold text-sm sm:text-base lg:text-lg text-center">Donations Confirmées</h3>
+            <h3 class="text-[#16163f] font-semibold text-sm sm:text-base lg:text-lg text-center">Cotisations</h3>
             <p class="text-lg sm:text-xl font-extrabold text-[#9933cc] mt-1"
                th:text="${fund.allConfirmedFees != null ? #numbers.formatInteger(fund.allConfirmedFees, 0, 'COMMA') + ' Ar' : '--'}">0 Ar</p>
         </div>
         <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow transition flex flex-col justify-center items-center">
-            <h3 class="text-[#16163f] font-semibold text-sm sm:text-base lg:text-lg text-center">Aides Confirmées</h3>
+            <h3 class="text-[#16163f] font-semibold text-sm sm:text-base lg:text-lg text-center">Dépenses</h3>
             <p class="text-lg sm:text-xl font-extrabold text-[#9933cc] mt-1"
                th:text="${fund.allConfirmedWithdrawals != null ? #numbers.formatInteger(fund.allConfirmedWithdrawals, 0, 'COMMA') + ' Ar' : '--'}">0 Ar</p>
         </div>
         <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow transition flex flex-col justify-center items-center">
-            <h3 class="text-[#16163f] font-semibold text-sm sm:text-base lg:text-lg text-center">Fonds Restants</h3>
+            <h3 class="text-[#16163f] font-semibold text-sm sm:text-base lg:text-lg text-center">Trésorerie</h3>
             <p class="text-lg sm:text-xl font-extrabold text-[#9933cc] mt-1"
                th:text="${fund.confirmedRemainingFund != null ? #numbers.formatInteger(fund.confirmedRemainingFund, 0, 'COMMA') + ' Ar' : '--'}">0 Ar</p>
         </div>

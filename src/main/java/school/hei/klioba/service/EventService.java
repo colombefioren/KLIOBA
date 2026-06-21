@@ -2,9 +2,12 @@ package school.hei.klioba.service;
 
 import static school.hei.klioba.model.PaymentStatus.VERIFYING;
 
+import java.time.Instant;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import school.hei.klioba.model.Event;
 import school.hei.klioba.model.psp.vola.VolaPsp;
@@ -26,6 +29,20 @@ public class EventService {
 
   public List<Event> findAllByClubIdWithPaymentResolution(String clubId) {
     return eventRepository.findAllByClubIdOrderByCreationInstantDesc(clubId).stream()
+        .map(this::resolvePayment)
+        .toList();
+  }
+
+  public Page<Event> findPageByClubIdWithPaymentResolution(
+      String clubId, String search, Instant dateFrom, Instant dateTo, int page, int size) {
+    return eventRepository
+        .findByClubIdWithFilters(clubId, search, dateFrom, dateTo, PageRequest.of(page, size))
+        .map(this::resolvePayment);
+  }
+
+  public List<Event> findAllByClubIdWithPaymentResolution(
+      String clubId, String search, Instant dateFrom, Instant dateTo) {
+    return eventRepository.findAllByClubIdWithFilters(clubId, search, dateFrom, dateTo).stream()
         .map(this::resolvePayment)
         .toList();
   }

@@ -57,24 +57,29 @@ class KliobaControllerTest {
 
   @Test
   void home_returnsHomeView() {
-    when(authentication.isAuthenticated()).thenReturn(true);
-    var clubs = List.of(new ClubService.ClubStats("c1", "Club 1", 1000, 5, 800));
-    when(clubService.getAllClubStats()).thenReturn(clubs);
-
-    String result = controller.home(authentication, model);
+    String result = controller.home();
 
     assertEquals("home", result);
-    verify(model).addAttribute(eq("clubs"), eq(clubs));
   }
 
   @Test
-  void home_whenNotAuthenticated_returnsHomeView() {
-    when(authentication.isAuthenticated()).thenReturn(false);
+  void dashboard_returnsDashboardViewWithStatistics() {
+    var clubs =
+        List.of(
+            new ClubService.ClubStats("c1", "Club 1", 1000, 5, 800),
+            new ClubService.ClubStats("c2", "Club 2", 2000, 10, 1500));
 
-    String result = controller.home(authentication, model);
+    when(clubService.getAllClubStats()).thenReturn(clubs);
 
-    assertEquals("home", result);
-    verify(model, never()).addAttribute(anyString(), any());
+    String result = controller.dashboard(authentication, model);
+
+    assertEquals("dashboard", result);
+
+    verify(model).addAttribute("clubs", clubs);
+    verify(model).addAttribute("totalCotisations", 3000);
+    verify(model).addAttribute("totalDepenses", 700); // (1000-800)+(2000-1500)
+    verify(model).addAttribute("totalRemaining", 2300);
+    verify(model).addAttribute("totalMembers", 15);
   }
 
   @Test

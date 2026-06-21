@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Klioba - Tableau de bord</title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{font-family:'Poppins',sans-serif}</style>
+</head>
+
+<body class="bg-[#F8F9FA] min-h-screen text-gray-800">
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="w-full px-6 sm:px-10 lg:px-16 pt-6 sm:pt-10 pb-10 sm:pb-14">
+  <div class="xl:pl-20 xl:pr-20">
+
+    <div class="mb-8">
+      <h1 class="text-2xl sm:text-3xl font-bold text-black tracking-tight">Tableau de bord</h1>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex flex-col justify-center">
+        <h3 class="text-gray-500 font-medium text-xs sm:text-sm mb-1">Trésorerie totale</h3>
+        <p class="text-2xl sm:text-3xl font-bold text-[#9933cc] mt-1"
+           th:text="${#numbers.formatInteger(totalRemaining, 0, 'COMMA') + ' Ar'}">0 Ar</p>
+        <p class="text-[10px] text-gray-400 mt-1">Solde global de tous les clubs</p>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex flex-col justify-center">
+        <h3 class="text-gray-500 font-medium text-xs sm:text-sm mb-1">Cotisations reçues</h3>
+        <p class="text-2xl sm:text-3xl font-bold text-[#2E9A6F] mt-1"
+           th:text="${#numbers.formatInteger(totalCotisations, 0, 'COMMA') + ' Ar'}">0 Ar</p>
+        <p class="text-[10px] text-gray-400 mt-1">Total des cotisations</p>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex flex-col justify-center">
+        <h3 class="text-gray-500 font-medium text-xs sm:text-sm mb-1">Dépenses effectuées</h3>
+        <p class="text-2xl sm:text-3xl font-bold text-[#E53E3E] mt-1"
+           th:text="${#numbers.formatInteger(totalDepenses, 0, 'COMMA') + ' Ar'}">0 Ar</p>
+        <p class="text-[10px] text-gray-400 mt-1">Total des dépenses</p>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex flex-col justify-center">
+        <h3 class="text-gray-500 font-medium text-xs sm:text-sm mb-1">Membres inscrits</h3>
+        <p class="text-2xl sm:text-3xl font-bold text-[#16163f] mt-1"
+           th:text="${#numbers.formatInteger(totalMembers, 0, 'COMMA')}">0</p>
+        <p class="text-[10px] text-gray-400 mt-1">Total des membres actifs</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+      <h2 class="text-xl font-bold text-black">Clubs</h2>
+      <div class="w-full sm:w-72 bg-white rounded-lg border border-gray-200 shadow-sm flex items-center px-4 py-2.5 focus-within:ring-2 focus-within:ring-[#9933cc]/20 focus-within:border-[#9933cc] transition-all">
+        <span class="material-icons text-gray-400 text-sm mr-2">search</span>
+        <input type="text" placeholder="Rechercher un club..." class="w-full bg-transparent border-none outline-none text-sm text-gray-700 placeholder-gray-400">
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6" id="club-grid">
+      <th:block th:each="club : ${clubs}">
+        <div th:replace="fragments/club-card :: clubCard(club=${club})"></div>
+      </th:block>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(clubs)}" class="flex justify-center items-center gap-4 mt-8" id="club-pagination">
+      <button id="page-prev" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-50 transition-colors opacity-30 cursor-not-allowed pointer-events-none">
+        <span class="material-icons text-gray-600 text-sm sm:text-base">chevron_left</span>
+      </button>
+      <span id="page-info" class="text-sm text-gray-500 font-medium w-20 text-center"></span>
+      <button id="page-next" class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full shadow-md border border-gray-200 hover:bg-gray-50 transition-colors">
+        <span class="material-icons text-gray-600 text-sm sm:text-base">chevron_right</span>
+      </button>
+    </div>
+
+    <div th:if="${#lists.isEmpty(clubs)}" class="text-center py-16">
+      <div class="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto shadow-sm mb-4">
+        <span class="material-icons text-4xl text-gray-300">groups</span>
+      </div>
+      <p class="text-gray-500 font-medium">Aucun club trouvé</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const cards = document.querySelectorAll('.club-card');
+  const prevBtn = document.getElementById('page-prev');
+  const nextBtn = document.getElementById('page-next');
+  const pageInfo = document.getElementById('page-info');
+  if (!cards.length || !prevBtn || !nextBtn || !pageInfo) return;
+
+  const perPage = 8;
+  let currentPage = 0;
+  const totalPages = Math.ceil(cards.length / perPage);
+
+  function showPage(page) {
+    currentPage = page;
+    cards.forEach((card, i) => {
+      card.classList.toggle('hidden', i < page * perPage || i >= (page + 1) * perPage);
+    });
+    pageInfo.textContent = (page + 1) + ' / ' + totalPages;
+    prevBtn.classList.toggle('opacity-30', page === 0);
+    prevBtn.classList.toggle('cursor-not-allowed', page === 0);
+    prevBtn.classList.toggle('pointer-events-none', page === 0);
+    nextBtn.classList.toggle('opacity-30', page >= totalPages - 1);
+    nextBtn.classList.toggle('cursor-not-allowed', page >= totalPages - 1);
+    nextBtn.classList.toggle('pointer-events-none', page >= totalPages - 1);
+  }
+
+  prevBtn.addEventListener('click', () => { if (currentPage > 0) showPage(currentPage - 1); });
+  nextBtn.addEventListener('click', () => { if (currentPage < totalPages - 1) showPage(currentPage + 1); });
+  showPage(0);
+});
+</script>
+
+</body>
+</html>

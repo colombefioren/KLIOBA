@@ -1,127 +1,123 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Klioba — Clubs HEI</title>
+    <title>Klioba - Clubs HEI</title>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Poppins', sans-serif; }
+
+        .image-fade-mask {
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 38%, black 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 38%, black 100%);
+        }
+
+        .cta-btn { transition: background-color 0.2s ease; }
     </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="min-h-screen bg-white font-[Poppins] text-gray-700 overflow-x-hidden">
 
 <div th:replace="fragments/header :: header"></div>
 
-<!-- Unauthenticated -->
-<div sec:authorize="isAnonymous()" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#16163f] via-[#1a1a4e] to-[#2a1a3e]">
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-40 -left-40 w-80 h-80 bg-[#9933cc] opacity-10 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-40 -right-40 w-80 h-80 bg-purple-500 opacity-10 rounded-full blur-3xl"></div>
-    </div>
-    <div class="text-center px-6 relative z-10">
-        <div class="text-white mb-8">
-            <h1 class="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">Klioba</h1>
-            <p class="text-lg sm:text-xl text-gray-300 max-w-md mx-auto leading-relaxed">Gérez les cotisations de votre club HEI simplement et en toute transparence.</p>
-        </div>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/oauth2/authorization/casdoor"
-               class="bg-[#9933cc] hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-all transform hover:scale-105 inline-flex items-center gap-2 shadow-lg shadow-purple-500/25">
-                <i class="material-icons">login</i>
-                <span>Se connecter</span>
-            </a>
-        </div>
-    </div>
-</div>
+<section class="relative w-full bg-white overflow-hidden">
 
-<!-- Authenticated -->
-<div sec:authorize="isAuthenticated()" class="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
-
-    <!-- Statistics Cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 mb-6">
-        <div class="bg-white rounded-xl shadow-sm p-5 hover:shadow transition flex flex-col justify-center items-center">
-            <h3 class="text-[#16163f] font-semibold text-xs sm:text-sm text-center">Cotisations reçues</h3>
-            <p class="text-lg sm:text-xl font-extrabold text-green-600 mt-1"
-               th:text="${#numbers.formatInteger(totalCotisations, 0, 'COMMA') + ' Ar'}">0 Ar</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-5 hover:shadow transition flex flex-col justify-center items-center">
-            <h3 class="text-[#16163f] font-semibold text-xs sm:text-sm text-center">Dépenses effectuées</h3>
-            <p class="text-lg sm:text-xl font-extrabold text-blue-600 mt-1"
-               th:text="${#numbers.formatInteger(totalDepenses, 0, 'COMMA') + ' Ar'}">0 Ar</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-5 hover:shadow transition flex flex-col justify-center items-center">
-            <h3 class="text-[#16163f] font-semibold text-xs sm:text-sm text-center">Trésorerie</h3>
-            <p class="text-lg sm:text-xl font-extrabold text-[#9933cc] mt-1"
-               th:text="${#numbers.formatInteger(totalRemaining, 0, 'COMMA') + ' Ar'}">0 Ar</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-5 hover:shadow transition flex flex-col justify-center items-center">
-            <h3 class="text-[#16163f] font-semibold text-xs sm:text-sm text-center">Membres inscrits</h3>
-            <p class="text-lg sm:text-xl font-extrabold text-[#16163f] mt-1"
-               th:text="${#numbers.formatInteger(totalMembers, 0, 'COMMA')}">0</p>
-        </div>
+    <div class="hidden xl:block absolute inset-y-0 right-0 w-[58%] z-0 pointer-events-none image-fade-mask">
+        <img
+                src="https://i.ibb.co/WNWPDQ1D/Chat-GPT-Image-Jun-21-2026-10-40-38-AM-tuxpi-1.jpg"
+                alt="HEI Club Members"
+                class="w-full h-full object-cover object-center"
+        />
     </div>
 
-    <!-- Club Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
-        <div th:each="club : ${clubs}"
-             class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all p-6 sm:p-7 flex flex-col">
+    <div class="relative z-10 w-full
+                px-6 sm:px-10 lg:px-16
+                flex flex-col xl:flex-row xl:items-center
+                xl:min-h-[calc(100vh-72px)]
+                py-16 xl:py-0
+                gap-10 xl:gap-0">
 
-            <div class="flex items-center gap-3 mb-5">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#16163f] to-[#2a2a6e] flex items-center justify-center">
-                    <span class="material-icons text-white text-xl">groups</span>
-                </div>
-                <h3 class="text-lg sm:text-xl font-bold text-[#16163f]" th:text="${club.name}">Club Name</h3>
-            </div>
+        <div class="w-full xl:w-[50%] flex flex-col gap-7 xl:pl-20">
 
-            <div class="grid grid-cols-3 gap-4 py-4 border-y border-gray-100 text-center">
-                <div>
-                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Cotisations</p>
-                    <p class="text-base font-bold text-green-600 mt-1"
-                       th:text="${#numbers.formatInteger(club.totalCotisations, 0, 'COMMA') + ' Ar'}">0 Ar</p>
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Membres</p>
-                    <p class="text-base font-bold text-[#16163f] mt-1"
-                       th:text="${#numbers.formatInteger(club.members, 0, 'COMMA')}">0</p>
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Trésorerie</p>
-                    <p class="text-base font-bold text-blue-600 mt-1"
-                       th:text="${#numbers.formatInteger(club.remainingFund, 0, 'COMMA') + ' Ar'}">0 Ar</p>
-                </div>
-            </div>
+            <h1 class="text-[38px] sm:text-[50px] lg:text-[54px] xl:text-[60px] font-bold leading-[1.12] text-[#16163f]">
+                La gestion des cotisations<br>
+                <span class="text-[#9933cc]">en toute simplicité.</span>
+            </h1>
 
-            <div class="mt-auto pt-5 flex gap-3">
-                <a th:href="@{/club/{clubId}/membershipFee(clubId=${club.id})}"
-                   class="flex-1 bg-[#9933cc] hover:bg-purple-700 text-white text-sm font-semibold py-3 px-3 rounded-lg transition-colors text-center">
-                    Payer cotisation
-                </a>
-                <a th:href="@{/history/{clubId}(clubId=${club.id})}"
-                   class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-3 px-3 rounded-lg transition-colors text-center">
-                    Historique
+            <p class="text-base sm:text-lg text-gray-500 leading-relaxed max-w-lg">
+                Klioba est la plateforme dédiée aux clubs de HEI pour la gestion des cotisations étudiantes. Les membres peuvent contribuer facilement, tandis que les responsables suivent les paiements et l'évolution des fonds de leur club en toute transparence.
+            </p>
+
+            <div>
+                <a href="/dashboard"
+                   class="cta-btn inline-flex items-center gap-2
+                          bg-[#9933cc] hover:bg-[#7a28a3] text-white
+                          font-semibold py-3 px-8 rounded-full text-sm sm:text-base">
+                    Commencer maintenant
+                    <span class="material-icons text-sm">arrow_forward</span>
                 </a>
             </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-6 border-t border-gray-100">
+
+                <div class="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2">
+                    <div class="shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-[#9933cc] bg-white shadow-sm">
+                        <i class="material-icons text-sm">shield</i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#16163f] text-sm">Paiement rapide</h4>
+                        <p class="text-xs text-gray-500 font-medium">Via Orange Money</p>
+                    </div>
+                </div>
+
+                <div class="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2">
+                    <div class="shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-[#9933cc] bg-white shadow-sm">
+                        <i class="material-icons text-sm">lock</i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#16163f] text-sm">Suivi sécurisé</h4>
+                        <p class="text-xs text-gray-500 font-medium">De chaque transaction</p>
+                    </div>
+                </div>
+
+                <div class="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2">
+                    <div class="shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-[#9933cc] bg-white shadow-sm">
+                        <i class="material-icons text-sm">diamond</i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#16163f] text-sm">Transparence totale</h4>
+                        <p class="text-xs text-gray-500 font-medium">Pour tous les membres</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="hidden xl:block xl:w-[50%]"></div>
+
+    </div>
+
+    <div class="xl:hidden w-full px-6 sm:px-10 pb-16">
+        <div class="w-full h-[240px] sm:h-[360px] rounded-2xl overflow-hidden shadow-md">
+            <img
+                    src="https://i.ibb.co/qY4p7Z22/Chat-GPT-Image-Jun-21-2026-10-40-38-AM.png"
+                    alt="HEI Club Members"
+                    class="w-full h-full object-cover object-center"
+            />
         </div>
     </div>
 
-    <!-- Empty state -->
-    <div th:if="${#lists.isEmpty(clubs)}" class="text-center py-12">
-        <span class="material-icons text-5xl text-gray-300 mb-3">groups</span>
-        <p class="text-gray-500">Aucun club trouvé</p>
-    </div>
+</section>
 
-</div>
-
-<!-- Footer -->
-<footer class="bg-[#16163f] text-white py-8 sm:py-12" sec:authorize="isAuthenticated()">
-    <div class="container mx-auto px-4 sm:px-6 text-center">
-        <h3 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Contactez-nous</h3>
-        <p class="mb-3 sm:mb-4 text-sm sm:text-base">Pour toute question sur les clubs HEI.</p>
-        <p class="text-base sm:text-lg text-[#9933cc] font-semibold mb-2">contact@hei.school</p>
-        <p class="mt-6 sm:mt-8 text-xs sm:text-sm text-gray-400">© 2026 Klioba — Clubs HEI. Tous droits réservés.</p>
+<footer class="bg-[#16163f] text-white py-10 sm:py-14">
+    <div class="w-full px-6 sm:px-10 lg:px-16 text-center">
+        <h3 class="text-xl sm:text-2xl font-bold mb-3">Contactez-nous</h3>
+        <p class="mb-3 text-sm sm:text-base text-gray-300">Pour toute question sur les clubs HEI.</p>
+        <a href="mailto:contact@hei.school" class="text-base sm:text-lg text-[#9933cc] font-semibold hover:underline">contact@hei.school</a>
+        <p class="mt-8 text-xs sm:text-sm text-gray-500">© 2026 Klioba – Clubs HEI. Tous droits réservés.</p>
     </div>
 </footer>
 

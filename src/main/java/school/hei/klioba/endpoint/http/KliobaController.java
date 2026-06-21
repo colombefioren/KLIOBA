@@ -30,21 +30,24 @@ public class KliobaController {
   private final ClubService clubService;
 
   @GetMapping("/")
-  public String home(Authentication authentication, Model model) {
-    if (authentication != null && authentication.isAuthenticated()) {
-      var clubs = clubService.getAllClubStats();
-      int totalCotisations = clubs.stream().mapToInt(ClubService.ClubStats::totalCotisations).sum();
-      int totalDepenses =
-          clubs.stream().mapToInt(c -> c.totalCotisations() - c.remainingFund()).sum();
-      int totalRemaining = clubs.stream().mapToInt(ClubService.ClubStats::remainingFund).sum();
-      int totalMembers = clubs.stream().mapToInt(ClubService.ClubStats::members).sum();
-      model.addAttribute("clubs", clubs);
-      model.addAttribute("totalCotisations", totalCotisations);
-      model.addAttribute("totalDepenses", totalDepenses);
-      model.addAttribute("totalRemaining", totalRemaining);
-      model.addAttribute("totalMembers", totalMembers);
-    }
+  public String home() {
     return "home";
+  }
+
+  @GetMapping("/dashboard")
+  public String dashboard(Authentication authentication, Model model) {
+    var clubs = clubService.getAllClubStats();
+    int totalCotisations = clubs.stream().mapToInt(ClubService.ClubStats::totalCotisations).sum();
+    int totalDepenses =
+        clubs.stream().mapToInt(c -> c.totalCotisations() - c.remainingFund()).sum();
+    int totalRemaining = clubs.stream().mapToInt(ClubService.ClubStats::remainingFund).sum();
+    int totalMembers = clubs.stream().mapToInt(ClubService.ClubStats::members).sum();
+    model.addAttribute("clubs", clubs);
+    model.addAttribute("totalCotisations", totalCotisations);
+    model.addAttribute("totalDepenses", totalDepenses);
+    model.addAttribute("totalRemaining", totalRemaining);
+    model.addAttribute("totalMembers", totalMembers);
+    return "dashboard";
   }
 
   @GetMapping("/history/{clubId}")

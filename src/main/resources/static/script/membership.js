@@ -21,41 +21,7 @@ function toggleStatuts() {
     dropdownElement.classList.toggle("dropdown-open")
 }
 
-function toggleMobileMenu() {
-    const mobileMenuElement = document.getElementById("mobile-menu")
-    const mobileMenuAnonymousElement = document.getElementById("mobile-menu-anonymous")
-
-    if (mobileMenuElement) {
-        mobileMenuElement.classList.toggle("hidden")
-    }
-
-    if (mobileMenuAnonymousElement) {
-        mobileMenuAnonymousElement.classList.toggle("hidden")
-    }
-}
-
-function handleResize() {
-    const mobileMenuElement = document.getElementById("mobile-menu")
-    const mobileMenuAnonymousElement = document.getElementById("mobile-menu-anonymous")
-
-    if (window.innerWidth >= 768) {
-        if (mobileMenuElement) {
-            mobileMenuElement.classList.add("hidden")
-        }
-        if (mobileMenuAnonymousElement) {
-            mobileMenuAnonymousElement.classList.add("hidden")
-        }
-    }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-    const mobileMenuButtons = document.querySelectorAll("header button.md\\:hidden")
-    mobileMenuButtons.forEach(buttonElement => {
-        buttonElement.addEventListener("click", toggleMobileMenu)
-    })
-
-    window.addEventListener("resize", handleResize)
-
     document.querySelectorAll("form").forEach(form => {
         form.addEventListener("submit", () => {
             const submitBtn = form.querySelector("button[type='submit']")

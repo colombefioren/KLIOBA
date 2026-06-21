@@ -55,7 +55,7 @@ public class SecurityConf {
                           log.info("✅ OAuth2 login SUCCESS");
                           log.info("User: {}", authentication.getName());
                           log.info("Authorities: {}", authentication.getAuthorities());
-                          response.sendRedirect("/");
+                          response.sendRedirect("/dashboard");
                         })
                     .failureHandler(
                         (request, response, exception) -> {

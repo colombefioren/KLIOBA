@@ -1,0 +1,47 @@
+<div th:fragment="clubCard(club)" class="club-card bg-white rounded-xl border border-gray-100 shadow-sm p-4 sm:p-6 relative">
+  <div class="flex items-center gap-3 sm:gap-4 mb-4">
+    <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-xl bg-[#16163f] flex items-center justify-center shrink-0 shadow-sm">
+      <span class="material-icons text-white text-lg sm:text-2xl">groups</span>
+    </div>
+    <div>
+      <h3 class="text-base sm:text-lg font-bold text-[#16163f] leading-tight" th:text="${club.name}">Club Name</h3>
+      <div class="mt-0.5 text-gray-400">
+        <span class="text-xs font-medium" th:text="${#numbers.formatInteger(club.members, 0, 'COMMA') + ' membres'}">12 membres</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full h-px bg-gray-100 my-3"></div>
+
+  <div class="flex items-center justify-between gap-2 mt-1">
+    <div class="flex flex-col min-w-0">
+      <span class="text-[10px] sm:text-xs text-gray-400">Trésorerie</span>
+      <span class="text-base sm:text-xl font-bold text-black mt-0.5 truncate"
+            th:text="${#numbers.formatInteger(club.remainingFund, 0, 'COMMA') + ' Ar'}">230,000 Ar</span>
+    </div>
+    <div class="flex items-center gap-3 sm:gap-4 border-l border-gray-200 pl-3 sm:pl-4 shrink-0">
+      <div class="flex flex-col items-end gap-0.5">
+        <span class="text-[10px] sm:text-xs text-gray-400">Cotisations</span>
+        <span class="text-[10px] sm:text-sm font-bold text-[#2E9A6F]"
+              th:text="${#numbers.formatInteger(club.totalCotisations, 0, 'COMMA') + ' Ar'}">230,000 Ar</span>
+      </div>
+      <div class="flex flex-col items-end gap-0.5">
+        <span class="text-[10px] sm:text-xs text-gray-400">Dépenses</span>
+        <span class="text-[10px] sm:text-sm font-bold text-[#E53E3E]"
+              th:text="${#numbers.formatInteger(club.totalCotisations - club.remainingFund, 0, 'COMMA') + ' Ar'}">0 Ar</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-3 mt-5 pt-4 border-t border-gray-50">
+    <a th:href="@{/club/{clubId}/membershipFee(clubId=${club.id})}"
+       class="flex-1 bg-[#9933cc] hover:bg-[#7a28a3] text-white text-xs sm:text-sm font-medium py-2 sm:py-2.5 px-3 rounded-lg transition-all shadow-sm shadow-[#7F56D9]/20 text-center">
+      Payer la cotisation
+    </a>
+    <a th:href="@{/history/{clubId}(clubId=${club.id})}"
+       title="Historique"
+       class="w-10 h-9 sm:w-12 sm:h-10 flex items-center justify-center border border-gray-200 hover:bg-gray-50 text-gray-600 rounded-lg transition-colors">
+      <span class="material-icons text-sm">history</span>
+    </a>
+  </div>
+</div>

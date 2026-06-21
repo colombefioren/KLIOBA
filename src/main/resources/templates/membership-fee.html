@@ -17,10 +17,6 @@
     <!-- Orange Money Section -->
     <div class="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-lg mb-4 sm:mb-6" style="background-color: hsl(var(--card));">
         <div class="text-center mb-4 sm:mb-6">
-            <p class="text-sm text-gray-400 uppercase tracking-wider font-medium">Club</p>
-            <p class="text-xl sm:text-2xl font-bold text-[#16163f]" th:text="${clubName}">Club Name</p>
-        </div>
-        <div class="text-center mb-4 sm:mb-6">
             <h1 class="text-xl sm:text-2xl font-bold" style="color: hsl(var(--foreground));">
                 Payez votre cotisation avec
                 <br class="sm:hidden">
@@ -80,7 +76,11 @@
     <div class="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-lg" style="background-color: hsl(var(--card));">
         <div class="text-center mb-4 sm:mb-6">
             <h2 class="text-lg sm:text-xl font-bold" style="color: hsl(var(--foreground));">Confirmer votre cotisation</h2>
-            <p class="text-xs sm:text-sm mt-1" style="color: hsl(var(--muted-foreground));">Remplissez ces informations après votre paiement</p>
+            <div class="inline-flex items-center gap-1.5 mt-2 bg-[#16163f]/5 text-[#16163f] text-xs font-medium px-3 py-1 rounded-full">
+                <span class="material-icons text-xs">groups</span>
+                <span th:text="${clubName}">Club Name</span>
+            </div>
+            <p class="text-xs sm:text-sm mt-2" style="color: hsl(var(--muted-foreground));">Remplissez ces informations après votre paiement</p>
         </div>
 
         <form th:action="@{/club/{clubId}/membershipFee(clubId=${clubId})}" th:object="${membershipForm}" method="post" class="max-w-md mx-auto">

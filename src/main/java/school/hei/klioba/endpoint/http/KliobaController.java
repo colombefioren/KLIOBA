@@ -18,6 +18,7 @@ import school.hei.klioba.service.ClubService;
 import school.hei.klioba.service.EventService;
 import school.hei.klioba.service.MembershipFeeCreationFormConsumer;
 import school.hei.klioba.service.MembershipFormService;
+import school.hei.klioba.utils.DateParamParser;
 
 @Controller
 @AllArgsConstructor
@@ -55,19 +56,30 @@ public class KliobaController {
       @PathVariable String clubId,
       Model model,
       @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "50") int size) {
-    var events = eventService.findAllByClubIdWithPaymentResolution(clubId);
-    var thEvents = events.stream().map(ThEvent::new).toList();
-    int total = thEvents.size();
-    int fromIndex = Math.min(page * size, total);
-    int toIndex = Math.min(fromIndex + size, total);
-    var pagedEvents = thEvents.subList(fromIndex, toIndex);
-    model.addAttribute("events", pagedEvents);
-    model.addAttribute("fund", new ThFund(events));
-    model.addAttribute("currentPage", page);
-    model.addAttribute("totalPages", (int) Math.ceil((double) total / size));
+      @RequestParam(defaultValue = "50") int size,
+      @RequestParam(required = false) String search,
+      @RequestParam(required = false) String dateFrom,
+      @RequestParam(required = false) String dateTo) {
+    if (search != null && search.isBlank()) search = null;
+    if (dateFrom != null && dateFrom.isBlank()) dateFrom = null;
+    if (dateTo != null && dateTo.isBlank()) dateTo = null;
+    var dateFromInstant = DateParamParser.parseDate(dateFrom);
+    var dateToInstant = DateParamParser.parseDateEnd(dateTo);
+    var eventsPage =
+        eventService.findPageByClubIdWithPaymentResolution(
+            clubId, search, dateFromInstant, dateToInstant, page, size);
+    var allEvents =
+        eventService.findAllByClubIdWithPaymentResolution(
+            clubId, search, dateFromInstant, dateToInstant);
+    model.addAttribute("events", eventsPage.getContent().stream().map(ThEvent::new).toList());
+    model.addAttribute("fund", new ThFund(allEvents));
+    model.addAttribute("currentPage", eventsPage.getNumber());
+    model.addAttribute("totalPages", eventsPage.getTotalPages());
     model.addAttribute("size", size);
     model.addAttribute("clubId", clubId);
+    model.addAttribute("search", search);
+    model.addAttribute("dateFrom", dateFrom);
+    model.addAttribute("dateTo", dateTo);
     model.addAttribute(
         "clubName",
         clubRepository

@@ -67,10 +67,12 @@ public class KliobaController {
     if (dateTo != null && dateTo.isBlank()) dateTo = null;
     var dateFromInstant = parseDate(dateFrom);
     var dateToInstant = parseDateEnd(dateTo);
-    var eventsPage = eventService.findPageByClubIdWithPaymentResolution(
-        clubId, search, dateFromInstant, dateToInstant, page, size);
-    var allEvents = eventService.findAllByClubIdWithPaymentResolution(
-        clubId, search, dateFromInstant, dateToInstant);
+    var eventsPage =
+        eventService.findPageByClubIdWithPaymentResolution(
+            clubId, search, dateFromInstant, dateToInstant, page, size);
+    var allEvents =
+        eventService.findAllByClubIdWithPaymentResolution(
+            clubId, search, dateFromInstant, dateToInstant);
     model.addAttribute("events", eventsPage.getContent().stream().map(ThEvent::new).toList());
     model.addAttribute("fund", new ThFund(allEvents));
     model.addAttribute("currentPage", eventsPage.getNumber());

@@ -25,8 +25,7 @@ public class EventSpecification {
 
   public static Specification<JEvent> dateFromAfter(Instant dateFrom) {
     if (dateFrom == null) return Specification.where(null);
-    return (root, query, cb) ->
-        cb.greaterThanOrEqualTo(root.get("creationInstant"), dateFrom);
+    return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("creationInstant"), dateFrom);
   }
 
   public static Specification<JEvent> dateToBefore(Instant dateTo) {

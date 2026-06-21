@@ -58,8 +58,7 @@ public class EventRepository {
 
   private Specification<JEvent> buildFilterSpec(
       String clubId, String search, Instant dateFrom, Instant dateTo) {
-    return Specification
-        .where(EventSpecification.clubIdEquals(clubId))
+    return Specification.where(EventSpecification.clubIdEquals(clubId))
         .and(EventSpecification.searchMatches(search))
         .and(EventSpecification.dateFromAfter(dateFrom))
         .and(EventSpecification.dateToBefore(dateTo));

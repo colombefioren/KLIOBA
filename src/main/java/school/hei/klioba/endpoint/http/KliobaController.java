@@ -1,8 +1,5 @@
 package school.hei.klioba.endpoint.http;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.NoSuchElementException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,6 +18,7 @@ import school.hei.klioba.service.ClubService;
 import school.hei.klioba.service.EventService;
 import school.hei.klioba.service.MembershipFeeCreationFormConsumer;
 import school.hei.klioba.service.MembershipFormService;
+import school.hei.klioba.utils.DateParamParser;
 
 @Controller
 @AllArgsConstructor
@@ -65,8 +63,8 @@ public class KliobaController {
     if (search != null && search.isBlank()) search = null;
     if (dateFrom != null && dateFrom.isBlank()) dateFrom = null;
     if (dateTo != null && dateTo.isBlank()) dateTo = null;
-    var dateFromInstant = parseDate(dateFrom);
-    var dateToInstant = parseDateEnd(dateTo);
+    var dateFromInstant = DateParamParser.parseDate(dateFrom);
+    var dateToInstant = DateParamParser.parseDateEnd(dateTo);
     var eventsPage =
         eventService.findPageByClubIdWithPaymentResolution(
             clubId, search, dateFromInstant, dateToInstant, page, size);
@@ -89,16 +87,6 @@ public class KliobaController {
             .orElseThrow(() -> new NoSuchElementException("This doesn't exist"))
             .getName());
     return "history";
-  }
-
-  private static Instant parseDate(String dateStr) {
-    if (dateStr == null) return null;
-    return LocalDate.parse(dateStr).atStartOfDay(ZoneId.of("UTC+3")).toInstant();
-  }
-
-  private static Instant parseDateEnd(String dateStr) {
-    if (dateStr == null) return null;
-    return LocalDate.parse(dateStr).plusDays(1).atStartOfDay(ZoneId.of("UTC+3")).toInstant();
   }
 
   @PostMapping("/club/{clubId}/membershipFee")

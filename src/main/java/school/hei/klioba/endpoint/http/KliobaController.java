@@ -1,5 +1,8 @@
 package school.hei.klioba.endpoint.http;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.NoSuchElementException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -55,19 +58,28 @@ public class KliobaController {
       @PathVariable String clubId,
       Model model,
       @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "50") int size) {
-    var events = eventService.findAllByClubIdWithPaymentResolution(clubId);
-    var thEvents = events.stream().map(ThEvent::new).toList();
-    int total = thEvents.size();
-    int fromIndex = Math.min(page * size, total);
-    int toIndex = Math.min(fromIndex + size, total);
-    var pagedEvents = thEvents.subList(fromIndex, toIndex);
-    model.addAttribute("events", pagedEvents);
-    model.addAttribute("fund", new ThFund(events));
-    model.addAttribute("currentPage", page);
-    model.addAttribute("totalPages", (int) Math.ceil((double) total / size));
+      @RequestParam(defaultValue = "50") int size,
+      @RequestParam(required = false) String search,
+      @RequestParam(required = false) String dateFrom,
+      @RequestParam(required = false) String dateTo) {
+    if (search != null && search.isBlank()) search = null;
+    if (dateFrom != null && dateFrom.isBlank()) dateFrom = null;
+    if (dateTo != null && dateTo.isBlank()) dateTo = null;
+    var dateFromInstant = parseDate(dateFrom);
+    var dateToInstant = parseDateEnd(dateTo);
+    var eventsPage = eventService.findPageByClubIdWithPaymentResolution(
+        clubId, search, dateFromInstant, dateToInstant, page, size);
+    var allEvents = eventService.findAllByClubIdWithPaymentResolution(
+        clubId, search, dateFromInstant, dateToInstant);
+    model.addAttribute("events", eventsPage.getContent().stream().map(ThEvent::new).toList());
+    model.addAttribute("fund", new ThFund(allEvents));
+    model.addAttribute("currentPage", eventsPage.getNumber());
+    model.addAttribute("totalPages", eventsPage.getTotalPages());
     model.addAttribute("size", size);
     model.addAttribute("clubId", clubId);
+    model.addAttribute("search", search);
+    model.addAttribute("dateFrom", dateFrom);
+    model.addAttribute("dateTo", dateTo);
     model.addAttribute(
         "clubName",
         clubRepository
@@ -75,6 +87,16 @@ public class KliobaController {
             .orElseThrow(() -> new NoSuchElementException("This doesn't exist"))
             .getName());
     return "history";
+  }
+
+  private static Instant parseDate(String dateStr) {
+    if (dateStr == null) return null;
+    return LocalDate.parse(dateStr).atStartOfDay(ZoneId.of("UTC+3")).toInstant();
+  }
+
+  private static Instant parseDateEnd(String dateStr) {
+    if (dateStr == null) return null;
+    return LocalDate.parse(dateStr).plusDays(1).atStartOfDay(ZoneId.of("UTC+3")).toInstant();
   }
 
   @PostMapping("/club/{clubId}/membershipFee")

@@ -37,8 +37,7 @@ VOLA_API_KEY=
 SERVER_ERROR_INCLUDEMESSAGE=
 ```
 
-Then, run Spring Boot as usual,
-for example by building an uber jar through `gradle bootJar`,
+Then, run Spring Boot as usual, for example by building an uber jar through `gradle bootJar`,
 then by launching `java -jar app.jar`.
 As there are a lot of environment variables to set,
 you probably want to load them through an `.env` file:

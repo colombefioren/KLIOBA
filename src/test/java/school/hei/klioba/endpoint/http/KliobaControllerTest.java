@@ -235,6 +235,68 @@ class KliobaControllerTest {
   }
 
   @Test
+  void historyByClub_withEmptySearch_normalizesToNull() {
+    var club = new Club("c1", "Club 1");
+    var user = new User("1", "John", "Doe", "john@example.com");
+    var payment =
+        new Payment(
+            "p1",
+            1000,
+            PspType.ORANGE_MONEY,
+            "PSP123",
+            PaymentStatus.CONFIRMED,
+            Instant.now(),
+            Instant.now());
+    var event = new MembershipFee("d1", payment, user, club, Instant.now());
+    Page<Event> page = new PageImpl<>(List.of((Event) event));
+
+    when(clubRepository.findById("c1")).thenReturn(java.util.Optional.of(club));
+    when(eventService.findPageByClubIdWithPaymentResolution(
+            eq("c1"), isNull(), isNull(), isNull(), eq(0), eq(50)))
+        .thenReturn(page);
+    when(eventService.findAllByClubIdWithPaymentResolution(eq("c1"), isNull(), isNull(), isNull()))
+        .thenReturn(List.of((Event) event));
+
+    var result = controller.historyByClub("c1", model, 0, 50, "", "", "");
+
+    assertEquals("history", result);
+    verify(model).addAttribute("search", null);
+    verify(model).addAttribute("dateFrom", null);
+    verify(model).addAttribute("dateTo", null);
+  }
+
+  @Test
+  void historyByClub_withBothDates_passesBothToService() {
+    var club = new Club("c1", "Club 1");
+    var user = new User("1", "John", "Doe", "john@example.com");
+    var payment =
+        new Payment(
+            "p1",
+            1000,
+            PspType.ORANGE_MONEY,
+            "PSP123",
+            PaymentStatus.CONFIRMED,
+            Instant.now(),
+            Instant.now());
+    var event = new MembershipFee("d1", payment, user, club, Instant.now());
+    Page<Event> page = new PageImpl<>(List.of((Event) event));
+
+    when(clubRepository.findById("c1")).thenReturn(java.util.Optional.of(club));
+    when(eventService.findPageByClubIdWithPaymentResolution(
+            eq("c1"), isNull(), any(Instant.class), any(Instant.class), eq(0), eq(50)))
+        .thenReturn(page);
+    when(eventService.findAllByClubIdWithPaymentResolution(
+            eq("c1"), isNull(), any(Instant.class), any(Instant.class)))
+        .thenReturn(List.of((Event) event));
+
+    var result = controller.historyByClub("c1", model, 0, 50, null, "2024-01-01", "2024-12-31");
+
+    assertEquals("history", result);
+    verify(model).addAttribute("dateFrom", "2024-01-01");
+    verify(model).addAttribute("dateTo", "2024-12-31");
+  }
+
+  @Test
   void membershipFee_get_returnsPrefilledMembershipForm() {
     var email = "test@example.com";
     Map<String, Object> attributes = new HashMap<>();

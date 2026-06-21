@@ -51,12 +51,11 @@
 
             <a href="/" class="text-xl sm:text-2xl font-bold text-white xl:pl-20">Klioba</a>
 
-            <div class="hidden md:flex items-center space-x-4 lg:space-x-6 text-sm font-medium text-gray-300">
-                <a class="hover:text-[#9933cc] transition-colors" href="#contact">Contact</a>
-            </div>
-
-            <div class="hidden md:flex items-center space-x-4 xl:pr-20">
-                <th:block th:replace="fragments/nav :: nav('/oauth2/authorization/casdoor', 'Se connecter', '', 'bg-[#9933cc]', 'hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-full transition-colors')"></th:block>
+            <div class="hidden md:flex items-center space-x-4 lg:space-x-6 xl:pr-20">
+                <div class="flex items-center space-x-4 lg:space-x-6">
+                    <th:block th:replace="fragments/nav :: nav('/contact', 'Contact', '', '', 'hover:text-[#9933cc] transition-colors')"></th:block>
+                    <th:block th:replace="fragments/nav :: nav('/oauth2/authorization/casdoor', 'Se connecter', '', 'bg-[#9933cc]', 'hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-full transition-colors')"></th:block>
+                </div>
             </div>
 
             <button id="mobile-menu-button-anon" aria-label="Toggle menu" aria-expanded="false"
@@ -74,6 +73,8 @@
              class="md:hidden bg-[#16163f] border-t border-white/10 overflow-hidden"
              style="max-height:0; transition: max-height 0.3s ease;">
             <div class="px-6 sm:px-10 py-5 flex flex-col gap-4 text-sm font-medium">
+
+                <th:block th:replace="fragments/nav :: nav('/contact', 'Contact', '', 'text-gray-300 font-medium', 'hover:text-[#9933cc] transition-colors')"></th:block>
 
                 <th:block th:replace="fragments/nav :: nav('/oauth2/authorization/casdoor', 'Se connecter', 'login', 'bg-[#9933cc] text-white font-bold py-2 px-4 rounded-full w-fit', 'hover:bg-purple-700 transition-colors')"></th:block>
 

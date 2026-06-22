@@ -1,95 +1,125 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Tsinjo - Fonds de sécurité HEI</title>
+    <title>Klioba - Clubs HEI</title>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+        body { font-family: 'Poppins', sans-serif; }
+
+        .image-fade-mask {
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 38%, black 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 38%, black 100%);
         }
-        .hero-bg {
-            background-image: linear-gradient(rgba(22, 22, 63, 0.7), rgba(22, 22, 63, 0.7)), url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');
-            background-size: cover;
-            background-position: center;
-        }
-        .section-bg {
-            background-color: #f7f2ff;
-        }
+
+        .cta-btn { transition: background-color 0.2s ease; }
     </style>
 </head>
 
-<body class="bg-white">
+<body class="min-h-screen bg-white font-[Poppins] text-gray-700 overflow-x-hidden">
+
 <div th:replace="fragments/header :: header"></div>
 
-<main>
-    <!-- Hero Section -->
-    <section class="hero-bg text-white py-12 sm:py-20 md:py-32 min-h-[70vh] sm:min-h-screen flex items-center">
-        <div class="container mx-auto px-4 sm:px-6 text-center">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6">
-                Ensemble, pour nos étudiants.
+<section class="relative w-full bg-white overflow-hidden">
+
+    <div class="hidden xl:block absolute inset-y-0 right-0 w-[58%] z-0 pointer-events-none image-fade-mask">
+        <img
+                src="https://i.ibb.co/WNWPDQ1D/Chat-GPT-Image-Jun-21-2026-10-40-38-AM-tuxpi-1.jpg"
+                alt="HEI Club Members"
+                class="w-full h-full object-cover object-center"
+        />
+    </div>
+
+    <div class="relative z-10 w-full
+                px-6 sm:px-10 lg:px-16
+                flex flex-col xl:flex-row xl:items-center
+                xl:min-h-[calc(100vh-72px)]
+                py-16 xl:py-0
+                gap-10 xl:gap-0">
+
+        <div class="w-full xl:w-[50%] flex flex-col gap-7 xl:pl-20">
+
+            <h1 class="text-[38px] sm:text-[50px] lg:text-[54px] xl:text-[60px] font-bold leading-[1.12] text-[#16163f]">
+                La gestion des cotisations<br>
+                <span class="text-[#9933cc]">en toute simplicité.</span>
             </h1>
-            <p class="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
-                Un fonds d'urgence pour soutenir les étudiants de HEI face aux imprévus de la vie. Votre don peut faire la différence.
+
+            <p class="text-base sm:text-lg text-gray-500 leading-relaxed max-w-lg">
+                Klioba est la plateforme dédiée aux clubs de HEI pour la gestion des cotisations étudiantes. Les membres peuvent contribuer facilement, tandis que les responsables suivent les paiements et l'évolution des fonds de leur club en toute transparence.
             </p>
-            <a class="bg-[#9933cc] hover:bg-purple-700 text-white font-bold py-3 px-6 sm:py-3 sm:px-8 rounded-full text-base sm:text-lg transition-colors inline-block"
-               href="/donate">
-                Soutenir un étudiant
-            </a>
-        </div>
-    </section>
 
-    <!-- Impact Section -->
-    <section class="section-bg py-12 sm:py-16 md:py-20 min-h-[70vh] sm:min-h-screen flex items-center">
-        <div class="container mx-auto px-4 sm:px-6">
-            <div class="flex flex-col md:flex-row items-center gap-8 sm:gap-12">
-                <!-- Image -->
-                <div class="w-full md:w-1/2 order-2 md:order-1">
-                    <img alt="Groupe d'étudiants souriants"
-                         class="rounded-lg shadow-2xl w-full h-auto"
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDNc0askNDDFS3o3dxdq8wLozbNGAYjpyAUWi6j0FFvHJGeuATtFh2Rep0MWe-LI90W58hZn1IMcfu3Wx24qvVO4_xs1rgrgU1w2l0GmNg4Fl7wRmBOLnoZ0BSkrDb6HLQn5aYfjjWIaVTX7BFcMXi0fxSuPYXkoIdz9hZ0wOcJBekZ1maQ5_G0TgI4-WF_kh4F4KdYnfgN7SREx_-eay6YaGuiQO0WX-pdiKU4i0aw5qn-FK2zEKqJ4o8HEZA8MXowdASdQ_Z6ps"/>
+            <div>
+                <a href="/dashboard"
+                   class="cta-btn inline-flex items-center gap-2
+                          bg-[#9933cc] hover:bg-[#7a28a3] text-white
+                          font-semibold py-3 px-8 rounded-full text-sm sm:text-base">
+                    Commencer maintenant
+                    <span class="material-icons text-sm">arrow_forward</span>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-6 border-t border-gray-100">
+
+                <div class="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2">
+                    <div class="shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-[#9933cc] bg-white shadow-sm">
+                        <i class="material-icons text-sm">shield</i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#16163f] text-sm">Paiement rapide</h4>
+                        <p class="text-xs text-gray-500 font-medium">Via Orange Money</p>
+                    </div>
                 </div>
 
-                <!-- Content -->
-                <div class="w-full md:w-1/2 order-1 md:order-2">
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#16163f] mb-4 sm:mb-6">
-                        Votre Impact est Réel
-                    </h2>
-                    <p class="text-sm sm:text-base text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                        Chaque contribution, petite ou grande, est un message d'espoir. Elle permet à nos étudiants de surmonter les obstacles, de rester concentrés sur leurs études et de ne pas abandonner leurs rêves. Vous ne donnez pas seulement de l'argent, vous offrez de la sérénité et un avenir.
-                    </p>
-                    <a class="bg-[#16163f] hover:bg-opacity-90 text-white font-bold py-3 px-6 rounded-full transition-colors inline-flex items-center text-sm sm:text-base"
-                       href="/donate">
-                        <span class="material-icons mr-2 text-lg sm:text-xl">favorite_border</span>
-                        <span>Je fais un don</span>
-                    </a>
+                <div class="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2">
+                    <div class="shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-[#9933cc] bg-white shadow-sm">
+                        <i class="material-icons text-sm">lock</i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#16163f] text-sm">Suivi sécurisé</h4>
+                        <p class="text-xs text-gray-500 font-medium">De chaque transaction</p>
+                    </div>
                 </div>
+
+                <div class="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2">
+                    <div class="shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-[#9933cc] bg-white shadow-sm">
+                        <i class="material-icons text-sm">diamond</i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-[#16163f] text-sm">Transparence totale</h4>
+                        <p class="text-xs text-gray-500 font-medium">Pour tous les membres</p>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </section>
 
-</main>
+        <div class="hidden xl:block xl:w-[50%]"></div>
 
-<!-- Footer -->
-<footer class="bg-[#16163f] text-white py-8 sm:py-12" id="contact">
-    <div class="container mx-auto px-4 sm:px-6 text-center">
-        <h3 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Contactez-nous</h3>
-        <p class="mb-3 sm:mb-4 text-sm sm:text-base">
-            Pour toute question sur le fonds ou pour faire un don par un autre moyen.
-        </p>
-        <p class="text-base sm:text-lg text-[#9933cc] font-semibold mb-2">
-            contact@hei.school
-        </p>
-        <p class="mt-6 sm:mt-8 text-xs sm:text-sm text-gray-400">
-            © 2025 Tsinjo - Fonds de sécurité HEI. Tous droits réservés.
-        </p>
+    </div>
+
+    <div class="xl:hidden w-full px-6 sm:px-10 pb-16">
+        <div class="w-full h-[240px] sm:h-[360px] rounded-2xl overflow-hidden shadow-md">
+            <img
+                    src="https://i.ibb.co/qY4p7Z22/Chat-GPT-Image-Jun-21-2026-10-40-38-AM.png"
+                    alt="HEI Club Members"
+                    class="w-full h-full object-cover object-center"
+            />
+        </div>
+    </div>
+
+</section>
+
+<footer class="bg-[#16163f] text-white py-10 sm:py-14">
+    <div class="w-full px-6 sm:px-10 lg:px-16 text-center">
+        <h3 class="text-xl sm:text-2xl font-bold mb-3">Contactez-nous</h3>
+        <p class="mb-3 text-sm sm:text-base text-gray-300">Pour toute question sur les clubs HEI.</p>
+        <a href="mailto:contact@hei.school" class="text-base sm:text-lg text-[#9933cc] font-semibold hover:underline">contact@hei.school</a>
+        <p class="mt-8 text-xs sm:text-sm text-gray-500">© 2026 Klioba – Clubs HEI. Tous droits réservés.</p>
     </div>
 </footer>
-
-<script th:src="@{/script/donate.js}"></script>
 
 </body>
 </html>

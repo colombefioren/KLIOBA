@@ -2,11 +2,6 @@
 
 ## Running
 
-### On cloud, using JCloudify
-
-This app is hosted on [JCloudify](https://www.jcloudify.com). It's the best way we know to host Spring Boot applications.
-Within a few clicks, you have your Spring Boot running with a publicly accessible URL, and with your CI/CD pipelines automatically configured on GitHub.
-
 ### Locally
 
 First, set all following environment variables:
@@ -28,7 +23,7 @@ SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_SCOPE_0_=openid
 SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_SCOPE_1_=profile
 SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CASDOOR_SCOPE_2_=email
 CASDOOR_LOGOUT_URL=
-APP_LOGOUT_URL=
+KLIOBA_LOGOUT_URL=
 
 # AWS
 AWS_S3_BUCKET=
@@ -42,8 +37,7 @@ VOLA_API_KEY=
 SERVER_ERROR_INCLUDEMESSAGE=
 ```
 
-Then, run Spring Boot as usual,
-for example by building an uber jar through `gradle bootJar`,
+Then, run Spring Boot as usual, for example by building an uber jar through `gradle bootJar`,
 then by launching `java -jar app.jar`.
 As there are a lot of environment variables to set,
 you probably want to load them through an `.env` file:

@@ -1,5 +1,5 @@
 sudo apt-get install jq
-export API_URL_SSM="`aws ssm get-parameter --name /klioba-b60f6597/$1/api/url`"
+export API_URL_SSM="`aws ssm get-parameter --name /klioba-6d4fd0ce/$1/api/url`"
 export API_URL=`echo $API_URL_SSM | jq -r '.Parameter.Value'`
 created_uuids=$(curl --fail -X GET "$API_URL$2")
 sleep 90
